@@ -278,6 +278,10 @@ If you choose the CMake build system for your application, there are two main wa
 
 In either case, `<tvision/tv.h>` will be available in your application's include path during compilation, and your application will be linked against the necessary libraries (Ncurses, GPM...) automatically.
 
+### PKG-CONFIG
+
+A `.pc` file is installed in `${CMAKE_INSTALL_LIBDIR}/pkgconfig/`, meaning that a `tvision` package is available to build systems such as Meson.
+
 <div id="features"></div>
 
 ## Features

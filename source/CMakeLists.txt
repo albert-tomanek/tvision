@@ -166,6 +166,30 @@ install(EXPORT ${PROJECT_NAME}-config
     COMPONENT library
 )
 
+# pkg-config file (we need to prepend the install dir to it first)
+
+set(PKGCONFIG_FILE)
+list(APPEND PKGCONFIG_FILE "prefix=${CMAKE_INSTALL_PREFIX}")
+list(APPEND PKGCONFIG_FILE "includedir=\${prefix}/include")
+list(APPEND PKGCONFIG_FILE "libdir=\${prefix}/lib")
+list(APPEND PKGCONFIG_FILE "")
+list(APPEND PKGCONFIG_FILE "Name: tvision")
+list(APPEND PKGCONFIG_FILE "Version: 2.0.0")
+list(APPEND PKGCONFIG_FILE "Description: A modern port of Turbo Vision 2.0, the classical framework for text-based user interfaces.")
+list(APPEND PKGCONFIG_FILE "URL: https://github.com/magiblot/tvision")
+list(APPEND PKGCONFIG_FILE "Cflags: -I\${includedir}/")
+if (TV_BUILD_USING_GPM)
+    list(APPEND PKGCONFIG_FILE "Libs: -L\${libdir} -ltvision -lgpm")
+else()
+    list(APPEND PKGCONFIG_FILE "Libs: -L\${libdir} -ltvision")
+endif()
+list(APPEND PKGCONFIG_FILE "Requires: ncurses")
+
+list(JOIN PKGCONFIG_FILE "\n" PKGCONFIG_FILE)
+
+file(WRITE "${CMAKE_BINARY_DIR}/tvision.pc" ${PKGCONFIG_FILE})
+install(FILES "${CMAKE_BINARY_DIR}/tvision.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig/")
+
 # includes
 # ./include/tvision and children copied to destination/include/tvision etc...
 #
